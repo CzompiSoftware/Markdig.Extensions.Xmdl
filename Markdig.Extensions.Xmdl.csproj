@@ -10,17 +10,16 @@
 		<AssemblyVersion>3.0.0.0</AssemblyVersion>
 		<FileVersion>3.0.0</FileVersion>
 		<VersionPrefix>3.0.0</VersionPrefix>
-		<!--	<VersionSuffix>beta</VersionSuffix>-->
 		<Authors>Czompi</Authors>
 		<Company>Czompi Software</Company>
 		<Product>Markdig.Extensions.Xmdl</Product>
-		<Description>Xmdl language base extension for Markdig</Description>
+		<Description>Xmdl base language extension for Markdig</Description>
 		<Copyright>Copyright © Czompi Software 2024</Copyright>
-		<Summary>Xmdl language base extension for Markdig</Summary>
+		<Summary>Xmdl base language extension for Markdig</Summary>
 		<NeutralLanguage>en-US</NeutralLanguage>
 		<Title>Markdig.Extensions.Xmdl</Title>
 		<PackageId>Markdig.Extensions.Xmdl</PackageId>
-		<PackageTags>Markdown,CommonMark,md,html,md2html,xmdl,eXtendedMarkDownLang,xmdl2html</PackageTags>
+		<PackageTags>Markdown;CommonMark;md;html;md2html;xmdl;eXtendedMarkDownLang</PackageTags>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageIcon>packageIcon.png</PackageIcon>
 		<PackageIconUrl>https://cdn.czsoft.hu/img/czsoftnuget@1.0/markdig_extensions_xmdl.png</PackageIconUrl>
@@ -29,26 +28,6 @@
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<RootNamespace>Markdig.Extensions.Xmdl</RootNamespace>
 		<AssemblyName>Markdig.Extensions.Xmdl</AssemblyName>
-		<!--	<GenerateDocumentationFile>true</GenerateDocumentationFile>-->
-		<!--	<Nullable>enable</Nullable>-->
-		<MinClientVersion>2.12</MinClientVersion>
-		<!--	<IncludeSymbols>true</IncludeSymbols>-->
-		<!--	<SymbolPackageFormat>snupkg</SymbolPackageFormat>-->
-		<!--	<CodeAnalysisRuleset>Newtonsoft.Json.ruleset</CodeAnalysisRuleset>-->
-		<!--	<EmbedUntrackedSources>true</EmbedUntrackedSources>-->
-		<!--Package Validation-->
-		<EnablePackageValidation>true</EnablePackageValidation>
-		<PackageValidationBaselineVersion>3.0.0</PackageValidationBaselineVersion>
-		<!--CP0003 will be logged when the assembly identity between baseline package and current don't match.
-        Disable that warning since local builds do not strong-name sign the assembly, causing a mistmatch when comparing
-        the previously shipped assemblies and current.-->
-		<NoWarn Condition="'$(SignAssembly)' != 'true'">$(NoWarn);CP0003</NoWarn>
-		<!-- Enable the trim/aot/single-file analyzers for all TargetFrameworks where they are supported. -->
-		<!-- We enable the analyzers directly instead of setting IsTrimmable or IsAotCompatible, to avoid adding IsTrimmable assembly metadata.
-             This should help avoid breaking consumers who use partial TrimMode. -->
-		<!--	<EnableSingleFileAnalyzer Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))">true</EnableSingleFileAnalyzer>-->
-		<!--	<EnableTrimAnalyzer Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))">true</EnableTrimAnalyzer>-->
-		<!--	<EnableAotAnalyzer Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</EnableAotAnalyzer>-->
 	</PropertyGroup>
 
 	<ItemGroup>
