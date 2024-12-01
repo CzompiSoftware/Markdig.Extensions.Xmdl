@@ -1,4 +1,5 @@
-﻿using Markdig.Helpers;
+﻿using System;
+using Markdig.Helpers;
 using Markdig.Parsers;
 using Markdig.Syntax;
 using System.Linq;
@@ -22,7 +23,7 @@ public class ExecutableCodeBlockParser : InlineParser
     public string DefaultClass { get; set; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ExecutableCodeParser"/> class.
+    /// Initializes a new instance of the <see cref="ExecutableCodeBlockParser"/> class.
     /// </summary>
     public ExecutableCodeBlockParser(string langId, string langName)
     {
@@ -50,8 +51,8 @@ public class ExecutableCodeBlockParser : InlineParser
         if (!text.Contains(OpeningCharacterString)) return false;
         if (!text.Contains(ClosingCharacterString)) return false;
 
-        var start = text.IndexOf(OpeningCharacterString);
-        var end = text.IndexOf(ClosingCharacterString) + ClosingCharacterString.Length;
+        var start = text.IndexOf(OpeningCharacterString, StringComparison.Ordinal);
+        var end = text.IndexOf(ClosingCharacterString, StringComparison.Ordinal) + ClosingCharacterString.Length;
 
         if (start == -1 || end == -1) return false;
         string sourceCode = text[start..end].Replace(OpeningCharacterString, "").Replace(ClosingCharacterString, "");
@@ -63,6 +64,7 @@ public class ExecutableCodeBlockParser : InlineParser
         processor.Inline = new ExecutableCodeBlock
         {
             SourceCode = sourceCode,
+            Context = processor.Context,
             Span = new SourceSpan() { Start = processor.GetSourcePosition(slice.Start, out int line, out int column) },
             Line = line
         };

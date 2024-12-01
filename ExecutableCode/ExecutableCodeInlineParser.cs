@@ -1,4 +1,5 @@
-﻿using Markdig.Helpers;
+﻿using System;
+using Markdig.Helpers;
 using Markdig.Parsers;
 using Markdig.Syntax;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ public class ExecutableCodeInlineParser : InlineParser
     public string DefaultClass { get; set; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ExecutableCodeParser"/> class.
+    /// Initializes a new instance of the <see cref="ExecutableCodeInlineParser"/> class.
     /// </summary>
     public ExecutableCodeInlineParser(string langId, string langName)
     {
@@ -55,8 +56,8 @@ public class ExecutableCodeInlineParser : InlineParser
         if (!text.Contains(OpeningCharacterString)) return false;
         if (!text.Contains(ClosingCharacterString)) return false;
 
-        var start = text.IndexOf(OpeningCharacterString);
-        var end = text.IndexOf(ClosingCharacterString) + ClosingCharacterString.Length;
+        var start = text.IndexOf(OpeningCharacterString, StringComparison.Ordinal);
+        var end = text.IndexOf(ClosingCharacterString, StringComparison.Ordinal) + ClosingCharacterString.Length;
 
         if (start == -1 || end == -1) return false;
         string sourceCode = text[start..end].Replace(OpeningCharacterString, "").Replace(ClosingCharacterString, "");
@@ -65,7 +66,7 @@ public class ExecutableCodeInlineParser : InlineParser
         {
             slice.NextChar();
         }
-        processor.Inline = new ExecutableCodeInline() { SourceCode = sourceCode };
+        processor.Inline = new ExecutableCodeInline() { SourceCode = sourceCode, Context = processor.Context };
         processor.Inline.Span = new SourceSpan() { Start = processor.GetSourcePosition(slice.Start, out int line, out int column) };
         processor.Inline.Line = line;
         processor.Inline.Span.End = processor.Inline.Span.Start + (start - end - 1);

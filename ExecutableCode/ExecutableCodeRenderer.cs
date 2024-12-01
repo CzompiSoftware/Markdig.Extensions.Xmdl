@@ -18,13 +18,13 @@ public abstract class ExecutableCodeRenderer
         _pipeline = pipeline;
     }
 
-    public abstract Task<(ExecutableCodeState, ExecutableCodeResult, List<string>)> ExecuteAsync(string script, string previousScript = null);
+    public abstract Task<(ExecutableCodeState, ExecutableCodeResult, List<string>)> ExecuteAsync(string script, MarkdownParserContext context, string previousScript = null);
 
-    public async Task<(List<string>, string)> WriteAsync(string script, bool isInline, string previousScript = null)
+    public async Task<(List<string>, string)> WriteAsync(string script, bool isInline, MarkdownParserContext context, string previousScript = null)
     {
         List<string> errors = new();
         string content = null;
-        var (state, compilationContext, executeErrors) = await ExecuteAsync(script, previousScript);
+        var (state, compilationContext, executeErrors) = await ExecuteAsync(script, context, previousScript);
 
         // Display errors
         if (compilationContext.Errors.Any())
@@ -49,7 +49,7 @@ public abstract class ExecutableCodeRenderer
             }
             else if (XmdlDocument.Instance.ReportObject is MarkdownReportObject markdownReportObject)
             {
-                var markdown = Markdown.ToHtml(markdownReportObject.Markdown, _pipeline);
+                var markdown = Markdown.ToHtml(markdownReportObject.Markdown, _pipeline, context);
                 if (isInline)
                 {
                     if (markdown.StartsWith("<p>"))

@@ -28,6 +28,11 @@ public class ExecutableCodeInline : LeafInline
     /// 
     /// </summary>
     public string SourceCode { get; internal set; }
+    
+    /// <summary>
+    /// Used to pass around data related to specific features (e.g. context awareness for websites)
+    /// </summary>
+    public MarkdownParserContext Context { get; internal set; }
 
     /// <summary>
     /// The content as a <see cref="StringSlice"/>.

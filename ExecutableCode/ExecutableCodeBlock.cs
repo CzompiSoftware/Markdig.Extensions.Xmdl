@@ -19,4 +19,5 @@ public class ExecutableCodeBlock : LeafInline
     /// </summary>
     public string CodeLanguage { get; set; }
     public string SourceCode { get; set; }
+    public MarkdownParserContext Context { get; set; }
 }

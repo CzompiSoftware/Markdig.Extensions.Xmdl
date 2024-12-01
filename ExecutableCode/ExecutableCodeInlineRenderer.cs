@@ -22,7 +22,7 @@ public class ExecutableCodeInlineRenderer : HtmlObjectRenderer<ExecutableCodeInl
     {
         try
         {
-            var (errors, content) = await _codeRenderer.WriteAsync(obj.SourceCode, true);
+            var (errors, content) = await _codeRenderer.WriteAsync(obj.SourceCode, true, obj.Context);
             renderer.Write($"{content}");
 
             if (errors?.Any() ?? false)

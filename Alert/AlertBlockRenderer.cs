@@ -14,6 +14,7 @@ public class AlertBlockRenderer : HtmlObjectRenderer<AlertBlock>
     public AlertBlockRenderer(MarkdownPipeline pipeline) : base()
     {
         _pipeline = pipeline;
+        
     }
 
     protected override void Write(HtmlRenderer renderer, AlertBlock obj)
