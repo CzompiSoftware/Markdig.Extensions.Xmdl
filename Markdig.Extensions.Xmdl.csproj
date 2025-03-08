@@ -4,17 +4,17 @@
 	<PropertyGroup>
 		<TargetFrameworks>net6.0;net8.0</TargetFrameworks>
 		<LangVersion>12.0</LangVersion>
-		<Version>3.1.0</Version>
+		<Version>3.1.2</Version>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
-		<AssemblyVersion>3.1.0.0</AssemblyVersion>
-		<FileVersion>3.1.0</FileVersion>
-		<VersionPrefix>3.1.0</VersionPrefix>
+		<AssemblyVersion>3.1.2.0</AssemblyVersion>
+		<FileVersion>3.1.2</FileVersion>
+		<VersionPrefix>3.1.2</VersionPrefix>
 		<Authors>Czompi</Authors>
 		<Company>Czompi Software</Company>
 		<Product>Markdig.Extensions.Xmdl</Product>
 		<Description>Xmdl base language extension for Markdig</Description>
-		<Copyright>Copyright © Czompi Software 2024</Copyright>
+		<Copyright>Copyright © Czompi Software 2025</Copyright>
 		<Summary>Xmdl base language extension for Markdig</Summary>
 		<NeutralLanguage>en-US</NeutralLanguage>
 		<Title>Markdig.Extensions.Xmdl</Title>
@@ -38,7 +38,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.0" />
-		<PackageReference Include="Markdig" Version="0.37.0" ExcludeAssets="runtime">
+		<PackageReference Include="Markdig" Version="0.40.0" ExcludeAssets="runtime">
 			<Private>false</Private>
 		</PackageReference>
 		<PackageReference Include="SS.NuGet.Publish" Version="1.0.2311.32" Condition="'$(Configuration)'=='Release'">

@@ -11,11 +11,11 @@ namespace Markdig.Extensions.Xmdl.ExecutableCode;
 /// </summary>
 /// <seealso cref="InlineParser" />
 /// <seealso cref="IPostInlineProcessor" />
-public class ExecutableCodeBlockParser : InlineParser
+public class ExecutableCodeBlockParser : BlockParser
 {
-    public string OpeningCharacterString { get; }
-    public string ClosingCharacterString { get; }
-    public char[] ClosingCharacters { get; }
+    internal string OpeningMarker { get; }
+    internal string ClosingMarker { get; }
+
 
     /// <summary>
     /// Gets or sets the default class to use when creating a math inline block.
@@ -27,48 +27,59 @@ public class ExecutableCodeBlockParser : InlineParser
     /// </summary>
     public ExecutableCodeBlockParser(string langId, string langName)
     {
-        OpeningCharacterString = "@"+langId+"{>";
-        //OpeningCharacters = new char[] { OpeningCharacterString[0] };
-        OpeningCharacters = OpeningCharacterString.ToCharArray();
-        ClosingCharacterString = "<}";
-        ClosingCharacters = ClosingCharacterString.ToArray();
+        OpeningMarker = "@" + langId + "{>";
+        OpeningCharacters = [OpeningMarker[0]];
         DefaultClass = "math";
     }
 
 
-
-    public override bool Match(InlineProcessor processor, ref StringSlice slice)
+    public override BlockState TryOpen(BlockProcessor processor)
     {
-        if (slice.PeekCharExtra(1) != OpeningCharacterString[1] ||
-            slice.PeekCharExtra(2) != OpeningCharacterString[2] ||
-            slice.PeekCharExtra(3) != OpeningCharacterString[3] ||
-            slice.PeekCharExtra(4) != OpeningCharacterString[4])
+        // Check if the current line starts with the opening marker.
+        var slice = processor.Line;
+        if (slice.PeekCharExtra(1) != OpeningMarker[1] ||
+            slice.PeekCharExtra(2) != OpeningMarker[2] ||
+            slice.PeekCharExtra(3) != OpeningMarker[3] ||
+            slice.PeekCharExtra(4) != OpeningMarker[4])
         {
-            return false;
-        }
-        string text = slice.Text[slice.Start..];
-        if (string.IsNullOrEmpty(text)) return false;
-        if (!text.Contains(OpeningCharacterString)) return false;
-        if (!text.Contains(ClosingCharacterString)) return false;
+            // Create and push a new LuaBlock.
+            var block = new ExecutableCodeBlock(this)
+            {
+                Column = processor.Column,
+                Span = new SourceSpan()
+                {
+                    Start = slice.Start,
+                    End = slice.End
+                }
+            };
+            processor.NewBlocks.Push(block);
 
-        var start = text.IndexOf(OpeningCharacterString, StringComparison.Ordinal);
-        var end = text.IndexOf(ClosingCharacterString, StringComparison.Ordinal) + ClosingCharacterString.Length;
-
-        if (start == -1 || end == -1) return false;
-        string sourceCode = text[start..end].Replace(OpeningCharacterString, "").Replace(ClosingCharacterString, "");
-        int length = sourceCode.Length;
-        for (int i = 0; i < $"{OpeningCharacterString}{sourceCode}{ClosingCharacterString}".Length; i++)
-        {
-            slice.NextChar();
+            // Optionally, advance the slice past the opening marker if you want to allow trailing content.
+            slice.Start += OpeningMarker.Length;
+            // We let the parser continue with the content lines.
+            return BlockState.Continue;
         }
-        processor.Inline = new ExecutableCodeBlock
+
+        return BlockState.None;
+    }
+
+    public override BlockState TryContinue(BlockProcessor processor, Block block)
+    {
+        var slice = processor.Line;
+        // Check if the line starts with the closing marker.
+        string currentLine = slice.Text;
+        if (currentLine.StartsWith(ClosingMarker))
         {
-            SourceCode = sourceCode,
-            Context = processor.Context,
-            Span = new SourceSpan() { Start = processor.GetSourcePosition(slice.Start, out int line, out int column) },
-            Line = line
-        };
-        processor.Inline.Span.End = processor.Inline.Span.Start + (start - end - 1);
-        return true;
+            // Finalize the block by updating its end.
+            block.UpdateSpanEnd(processor.Line.End);
+            // Return BreakDiscard so that the closing marker line is not included.
+            return BlockState.BreakDiscard;
+        }
+        else
+        {
+            // Append the current line to the block content.
+            block.Lines.Add(slice.Slice());
+            return BlockState.Continue;
+        }
     }
 }
