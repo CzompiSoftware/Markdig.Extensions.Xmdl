@@ -37,6 +37,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="HtmlSanitizer" Version="9.0.876" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.4" />
 		<PackageReference Include="Markdig" Version="0.40.0" ExcludeAssets="runtime">
 			<Private>false</Private>

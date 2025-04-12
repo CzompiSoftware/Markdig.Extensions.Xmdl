@@ -10,7 +10,7 @@ namespace Markdig.Extensions.Xmdl.ExecutableCode;
 /// <summary>
 /// A C# source code inline element.
 /// </summary>
-public class ExecutableCodeBlock : CodeBlock, IFencedBlock
+public class ExecutableCodeBlock : LeafBlock
 {
     public ExecutableCodeBlock(BlockParser parser) : base(parser)
     {

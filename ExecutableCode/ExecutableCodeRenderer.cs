@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using Markdig.Extensions.Xmdl.Sanitization;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Markdig.Extensions.Xmdl.ExecutableCode;
@@ -22,6 +23,8 @@ public abstract class ExecutableCodeRenderer
 
     public async Task<(List<string>, string)> WriteAsync(string script, bool isInline, MarkdownParserContext context, string previousScript = null)
     {
+        // ✨ Bemeneti script sanitizálása már az elején
+        script = HtmlContentSanitizer.Sanitize(script);
         List<string> errors = new();
         string content = null;
         var (state, compilationContext, executeErrors) = await ExecuteAsync(script, context, previousScript);
