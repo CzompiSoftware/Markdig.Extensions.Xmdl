@@ -66,7 +66,10 @@ public class ExecutableCodeInlineParser : InlineParser
         {
             slice.NextChar();
         }
-        processor.Inline = new ExecutableCodeInline() { SourceCode = sourceCode, Context = processor.Context };
+
+        var code = new ExecutableCodeInline() { Context = processor.Context };
+        code.SourceCode.Append(sourceCode);
+        processor.Inline = code;
         processor.Inline.Span = new SourceSpan() { Start = processor.GetSourcePosition(slice.Start, out int line, out int column) };
         processor.Inline.Line = line;
         processor.Inline.Span.End = processor.Inline.Span.Start + (start - end - 1);

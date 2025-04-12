@@ -4,12 +4,12 @@
 	<PropertyGroup>
 		<TargetFrameworks>net6.0;net8.0</TargetFrameworks>
 		<LangVersion>12.0</LangVersion>
-		<Version>3.1.2</Version>
+		<Version>3.2.0</Version>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
-		<AssemblyVersion>3.1.2.0</AssemblyVersion>
-		<FileVersion>3.1.2</FileVersion>
-		<VersionPrefix>3.1.2</VersionPrefix>
+		<AssemblyVersion>3.2.0.0</AssemblyVersion>
+		<FileVersion>3.2.0</FileVersion>
+		<VersionPrefix>3.2.0</VersionPrefix>
 		<Authors>Czompi</Authors>
 		<Company>Czompi Software</Company>
 		<Product>Markdig.Extensions.Xmdl</Product>
@@ -22,7 +22,7 @@
 		<PackageTags>Markdown;CommonMark;md;html;md2html;xmdl;eXtendedMarkDownLang</PackageTags>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageIcon>packageIcon.png</PackageIcon>
-		<PackageIconUrl>https://cdn.czsoft.hu/img/czsoftnuget@1.0/markdig_extensions_xmdl.png</PackageIconUrl>
+		<PackageIconUrl>https://cdn.czsoft.hu/img/czsoftnuget@v1.0/markdig-extensions-xmdl.png</PackageIconUrl>
 		<PackageProjectUrl>https://docs.czsoft.hu/xmdl/csharp/markdig-extension</PackageProjectUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -37,11 +37,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.4" />
 		<PackageReference Include="Markdig" Version="0.40.0" ExcludeAssets="runtime">
 			<Private>false</Private>
 		</PackageReference>
-		<PackageReference Include="SS.NuGet.Publish" Version="1.0.2311.32" Condition="'$(Configuration)'=='Release'">
+	</ItemGroup>
+	<ItemGroup Condition="'$(Configuration)'=='Release'">
+		<PackageReference Include="SS.NuGet.Publish" Version="1.0.2311.32">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>

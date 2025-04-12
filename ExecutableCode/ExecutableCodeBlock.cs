@@ -1,4 +1,5 @@
-﻿using Markdig.Helpers;
+﻿using System.Text;
+using Markdig.Helpers;
 using Markdig.Parsers;
 using Markdig.Syntax;
 using Markdig.Syntax.Inlines;
@@ -20,7 +21,9 @@ public class ExecutableCodeBlock : CodeBlock, IFencedBlock
     /// The trimmed source code.
     /// </summary>
     public string CodeLanguage { get; set; }
-    public string SourceCode { get; set; }
+
+    public StringBuilder SourceCode { get; } = new();
+    
     public MarkdownParserContext Context { get; set; }
     
     

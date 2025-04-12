@@ -29,6 +29,7 @@ public class ExecutableCodeBlockParser : BlockParser
     {
         OpeningMarker = "@" + langId + "{>";
         OpeningCharacters = [OpeningMarker[0]];
+        ClosingMarker = "<}";
         DefaultClass = "math";
     }
 
@@ -37,16 +38,13 @@ public class ExecutableCodeBlockParser : BlockParser
     {
         // Check if the current line starts with the opening marker.
         var slice = processor.Line;
-        if (slice.PeekCharExtra(1) != OpeningMarker[1] ||
-            slice.PeekCharExtra(2) != OpeningMarker[2] ||
-            slice.PeekCharExtra(3) != OpeningMarker[3] ||
-            slice.PeekCharExtra(4) != OpeningMarker[4])
+        if (slice.Match(OpeningMarker))
         {
             // Create and push a new LuaBlock.
             var block = new ExecutableCodeBlock(this)
             {
                 Column = processor.Column,
-                Span = new SourceSpan()
+                Span = new SourceSpan
                 {
                     Start = slice.Start,
                     End = slice.End
@@ -65,21 +63,22 @@ public class ExecutableCodeBlockParser : BlockParser
 
     public override BlockState TryContinue(BlockProcessor processor, Block block)
     {
-        var slice = processor.Line;
-        // Check if the line starts with the closing marker.
-        string currentLine = slice.Text;
-        if (currentLine.StartsWith(ClosingMarker))
+        var codeBlock = (ExecutableCodeBlock)block;
+        // Convert current line to string.
+        if (processor.Line.Length <= 0) return BlockState.Continue;
+        
+        string line = processor.Line.Text.Substring(processor.Line.Start, processor.Line.Length);
+        
+        // If the closing marker is detected, update the block's span and stop processing.
+        if (line.Contains(ClosingMarker))
         {
-            // Finalize the block by updating its end.
+            codeBlock.SourceCode.AppendLine(line.Replace(ClosingMarker, ""));
             block.UpdateSpanEnd(processor.Line.End);
-            // Return BreakDiscard so that the closing marker line is not included.
-            return BlockState.BreakDiscard;
+            return BlockState.Break;
         }
-        else
-        {
-            // Append the current line to the block content.
-            block.Lines.Add(slice.Slice());
-            return BlockState.Continue;
-        }
+
+        // Append the current line to the block's content, followed by a newline.
+        codeBlock.SourceCode.AppendLine(line);
+        return BlockState.Continue;
     }
 }

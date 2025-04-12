@@ -1,4 +1,5 @@
-﻿using Markdig.Helpers;
+﻿using System.Text;
+using Markdig.Helpers;
 using Markdig.Syntax.Inlines;
 
 namespace Markdig.Extensions.Xmdl.ExecutableCode;
@@ -27,7 +28,7 @@ public class ExecutableCodeInline : LeafInline
     /// <summary>
     /// 
     /// </summary>
-    public string SourceCode { get; internal set; }
+    public StringBuilder SourceCode { get; } = new();
     
     /// <summary>
     /// Used to pass around data related to specific features (e.g. context awareness for websites)
