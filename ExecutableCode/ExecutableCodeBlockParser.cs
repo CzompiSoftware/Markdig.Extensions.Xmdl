@@ -1,6 +1,7 @@
-﻿using Markdig.Extensions.Xmdl.ExecutableCode;
-using Markdig.Parsers;
+﻿using Markdig.Parsers;
 using Markdig.Syntax;
+
+namespace Markdig.Extensions.Xmdl.ExecutableCode;
 
 public class ExecutableCodeBlockParser : BlockParser
 {
